@@ -29,7 +29,8 @@ async function addAndRemoveReaction(msg) {
 
     try {
         await msg.react(emoji);
-        await setTimeoutAsync(250);
+        console.log('reacted');
+        //await setTimeoutAsync(150);
 
         await removeReaction(msg);
     } catch (err) {
@@ -39,8 +40,15 @@ async function addAndRemoveReaction(msg) {
 }
 
 async function removeReaction(msg) {
-    try{
-        await msg.reactions.cache.get(emoji).remove()
+    try {
+        await msg.fetch();
+        const reaction = msg.reactions.cache.get(emoji);
+        if (reaction) {
+            await reaction.users.remove(client.user.id);
+            console.log('deleted');
+        } else {
+            console.log("Reaction not found in cache.");
+        }
     } catch (err) {
         console.error('Request failed:', err);
     } finally {
