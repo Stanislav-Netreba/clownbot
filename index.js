@@ -12,6 +12,7 @@ client.on('ready', async () => {
 })
 
 client.on('messageCreate', async msg => {
+    if(msg.author.bot) return;
 
     if(
         // ids.guild.includes(msg.guildId) &&
@@ -29,7 +30,6 @@ async function addAndRemoveReaction(msg) {
 
     try {
         await msg.react(emoji);
-        //console.log('reacted');
         await setTimeoutAsync(700);
 
         await removeReaction(msg);
@@ -41,7 +41,6 @@ async function addAndRemoveReaction(msg) {
 
 async function removeReaction(msg) {
     try {
-        //await msg.fetch();
         const reaction = msg.reactions.cache.get(emoji);
         if (reaction) {
             await reaction.users.remove(client.user.id);
