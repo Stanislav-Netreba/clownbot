@@ -1,6 +1,6 @@
 # Libs to install:
 
-`npm i discord.js-selfbot-v13 dotenv util`
+`npm i`
 
 # How to launch:
 

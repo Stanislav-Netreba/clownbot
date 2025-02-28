@@ -30,7 +30,7 @@ async function addAndRemoveReaction(msg) {
     try {
         await msg.react(emoji);
         //console.log('reacted');
-        await setTimeoutAsync(100);
+        await setTimeoutAsync(700);
 
         await removeReaction(msg);
     } catch (err) {
