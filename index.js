@@ -29,7 +29,7 @@ async function addAndRemoveReaction(msg) {
 
     try {
         await msg.react(emoji);
-        console.log('reacted');
+        //console.log('reacted');
         //await setTimeoutAsync(150);
 
         await removeReaction(msg);
@@ -45,7 +45,7 @@ async function removeReaction(msg) {
         const reaction = msg.reactions.cache.get(emoji);
         if (reaction) {
             await reaction.users.remove(client.user.id);
-            console.log('deleted');
+            console.log('Succses');
         } else {
             console.log("Reaction not found in cache.");
         }
