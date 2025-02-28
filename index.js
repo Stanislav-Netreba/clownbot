@@ -44,7 +44,9 @@ async function removeReaction(msg) {
         const reaction = msg.reactions.cache.get(emoji);
         if (reaction) {
             await reaction.users.remove(client.user.id);
-            console.log('Succses');
+            console.log()
+
+            console.log(`Succses [${msg.author.displayName}]`);
         } else {
             console.log("Reaction not found in cache.");
         }
