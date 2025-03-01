@@ -1,5 +1,5 @@
 const { Client } = require('discord.js-selfbot-v13');
-const {ids, check, emoji} = require('./config.json')
+const {ids, check, emoji, delay} = require('./config.json')
 require('dotenv').config()
 const client = new Client();
 const { promisify } = require('util');
@@ -27,7 +27,7 @@ client.on('messageCreate', async msg => {
         (!check.user || (check.user && ids.user.includes(msg.author.id)))
     ){
         await addReaction(msg);
-        await setTimeoutAsync(700);
+        await setTimeoutAsync(delay);
         await removeReaction(msg);
     }
 
