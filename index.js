@@ -1,11 +1,25 @@
 const { Client } = require('discord.js-selfbot-v13');
 const {ids, check, emoji, delay} = require('./config.json')
 require('dotenv').config()
-const client = new Client();
+const readline = require('readline');
 const { promisify } = require('util');
 const setTimeoutAsync = promisify(setTimeout);
 
+const client = new Client();
 let reactionLock = false;
+let on_off = false;
+
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.on('line', (input) => {
+    if (input.trim().toLowerCase() === 'toggle') {
+        on_off = !on_off;
+        console.log(`Бот ${on_off ? 'увімкнений' : 'вимкнений'}`);
+    }
+});
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is ready!`);
@@ -27,18 +41,19 @@ client.on('messageCreate', async msg => {
         (!check.user || (check.user && ids.user.includes(msg.author.id)))
     ){
         await addReaction(msg);
-        await setTimeoutAsync(delay);
-        await removeReaction(msg);
+
     }
 
 })
 
 async function addReaction(msg) {
-    if (reactionLock) return;
+    if (reactionLock || !on_off) return;
     reactionLock = true;
 
     try {
         await msg.react(emoji);
+        await setTimeoutAsync(delay);
+        await removeReaction(msg);
     } catch (err) {
         console.error('Request failed:', err);
         reactionLock = false;
