@@ -12,20 +12,20 @@ client.on('ready', async () => {
     console.log(Object.values(await getInfo()));
 })
 
-// client.on('messageCreate', async msg => {
-//     if(msg.author.bot) return;
-//
-//     if(
-//         (!check.guild || (check.guild && ids.guild.includes(msg.guildId))) &&
-//         (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
-//         (!check.user || (check.user && ids.user.includes(msg.author.id)))
-//     ){
-//         await addReaction(msg);
-//         await setTimeoutAsync(700);
-//         await removeReaction(msg);
-//     }
-//
-// })
+client.on('messageCreate', async msg => {
+    if(msg.author.bot) return;
+
+    if(
+        (!check.guild || (check.guild && ids.guild.includes(msg.guildId))) &&
+        (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
+        (!check.user || (check.user && ids.user.includes(msg.author.id)))
+    ){
+        await addReaction(msg);
+        await setTimeoutAsync(700);
+        await removeReaction(msg);
+    }
+
+})
 
 async function addReaction(msg) {
     if (reactionLock) return;
