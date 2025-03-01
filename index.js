@@ -15,9 +15,9 @@ client.on('messageCreate', async msg => {
     if(msg.author.bot) return;
 
     if(
-        // ids.guild.includes(msg.guildId) &&
-        ids.channel.includes(msg.channelId)
-        // ids.user.includes(msg.author.id)
+        (!check.guild || (check.guild && ids.guild === msg.guildId)) &&
+        (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
+        (!check.user || (check.user && ids.user.includes(msg.author.id)))
     ){
         await addAndRemoveReaction(msg);
     }
