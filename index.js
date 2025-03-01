@@ -14,7 +14,7 @@ client.on('ready', async () => {
 
     const activeObjects = await getInfo();
     for (const [key, values] of Object.entries(activeObjects)) {
-        console.log(`🔹 ${key.charAt(0).toUpperCase() + key.slice(1)}: ${values.join(", ")}`);
+        console.log(`🔹 ${key.charAt(0).toUpperCase() + key.slice(1)}: ${check[key] ? values.join(", ") : '-'}`)
     }
 });
 
@@ -63,9 +63,9 @@ async function removeReaction(msg) {
 
 async function getInfo() {
     const result = {
-        guilds: [],
-        channels: [],
-        users: []
+        guild: [],
+        channel: [],
+        user: []
     };
 
     if (check.guild) {
@@ -73,7 +73,7 @@ async function getInfo() {
             if (guildId) {
                 try {
                     const guild = await client.guilds.fetch(guildId);
-                    result.guilds.push(guild.name);
+                    result.guild.push(guild.name);
                 } catch (error) {
                     console.error(`Не вдалося отримати сервер з ID ${guildId}:`, error);
                 }
@@ -86,7 +86,7 @@ async function getInfo() {
             if (channelId) {
                 try {
                     const channel = await client.channels.fetch(channelId);
-                    result.channels.push(channel.name);
+                    result.channel.push(channel.name);
                 } catch (error) {
                     console.error(`Не вдалося отримати канал з ID ${channelId}:`, error);
                 }
@@ -99,7 +99,7 @@ async function getInfo() {
             if (userId) {
                 try {
                     const user = await client.users.fetch(userId);
-                    result.users.push(user.username);
+                    result.user.push(user.username);
                 } catch (error) {
                     console.error(`Не вдалося отримати користувача з ID ${userId}:`, error);
                 }
