@@ -9,22 +9,23 @@ let reactionLock = false;
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is ready!`);
+    console.log(Object.values(await getInfo()));
 })
 
-client.on('messageCreate', async msg => {
-    if(msg.author.bot) return;
-
-    if(
-        (!check.guild || (check.guild && ids.guild.includes(msg.guildId))) &&
-        (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
-        (!check.user || (check.user && ids.user.includes(msg.author.id)))
-    ){
-        await addReaction(msg);
-        await setTimeoutAsync(700);
-        await removeReaction(msg);
-    }
-
-})
+// client.on('messageCreate', async msg => {
+//     if(msg.author.bot) return;
+//
+//     if(
+//         (!check.guild || (check.guild && ids.guild.includes(msg.guildId))) &&
+//         (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
+//         (!check.user || (check.user && ids.user.includes(msg.author.id)))
+//     ){
+//         await addReaction(msg);
+//         await setTimeoutAsync(700);
+//         await removeReaction(msg);
+//     }
+//
+// })
 
 async function addReaction(msg) {
     if (reactionLock) return;
@@ -53,5 +54,55 @@ async function removeReaction(msg) {
         reactionLock = false;
     }
 }
+
+async function getInfo() {
+    const result = {
+        guilds: [],
+        channels: [],
+        users: []
+    };
+
+    if (check.guild) {
+        for (const guildId of ids.guild) {
+            if (guildId) {
+                try {
+                    const guild = await client.guilds.fetch(guildId);
+                    result.guilds.push(guild.name);
+                } catch (error) {
+                    console.error(`Не вдалося отримати сервер з ID ${guildId}:`, error);
+                }
+            }
+        }
+    }
+
+    if (check.channel) {
+        for (const channelId of ids.channel) {
+            if (channelId) {
+                try {
+                    const channel = await client.channels.fetch(channelId);
+                    result.channels.push(channel.name);
+                } catch (error) {
+                    console.error(`Не вдалося отримати канал з ID ${channelId}:`, error);
+                }
+            }
+        }
+    }
+
+    if (check.user) {
+        for (const userId of ids.user) {
+            if (userId) {
+                try {
+                    const user = await client.users.fetch(userId);
+                    result.users.push(user.username);
+                } catch (error) {
+                    console.error(`Не вдалося отримати користувача з ID ${userId}:`, error);
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
 
 client.login(process.env.TOKEN);
