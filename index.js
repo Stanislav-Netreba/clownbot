@@ -9,8 +9,14 @@ let reactionLock = false;
 
 client.on('ready', async () => {
     console.log(`${client.user.username} is ready!`);
-    console.log(Object.values(await getInfo()));
-})
+
+    console.log('Фільтр активний по:');
+
+    const activeObjects = await getInfo();
+    for (const [key, values] of Object.entries(activeObjects)) {
+        console.log(`🔹 ${key.charAt(0).toUpperCase() + key.slice(1)}: ${values.join(", ")}`);
+    }
+});
 
 client.on('messageCreate', async msg => {
     if(msg.author.bot) return;
