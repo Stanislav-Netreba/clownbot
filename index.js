@@ -68,6 +68,8 @@ async function removeReaction(msg) {
             console.log(`[${msg.author.displayName}-${msg.author.id}]`);
         } else {
             console.log("Reaction not found in cache.");
+            await setTimeoutAsync(delay);
+            await reaction.users.remove(client.user.id);
         }
     } catch (err) {
         console.error('Request failed:', err);
