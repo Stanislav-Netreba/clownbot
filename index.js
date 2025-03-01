@@ -15,24 +15,23 @@ client.on('messageCreate', async msg => {
     if(msg.author.bot) return;
 
     if(
-        (!check.guild || (check.guild && ids.guild === msg.guildId)) &&
+        (!check.guild || (check.guild && ids.guild.includes(msg.guildId))) &&
         (!check.channel || (check.channel && ids.channel.includes(msg.channelId))) &&
         (!check.user || (check.user && ids.user.includes(msg.author.id)))
     ){
-        await addAndRemoveReaction(msg);
+        await addReaction(msg);
+        await setTimeoutAsync(700);
+        await removeReaction(msg);
     }
 
 })
 
-async function addAndRemoveReaction(msg) {
+async function addReaction(msg) {
     if (reactionLock) return;
     reactionLock = true;
 
     try {
         await msg.react(emoji);
-        await setTimeoutAsync(700);
-
-        await removeReaction(msg);
     } catch (err) {
         console.error('Request failed:', err);
         reactionLock = false;
@@ -44,9 +43,7 @@ async function removeReaction(msg) {
         const reaction = msg.reactions.cache.get(emoji);
         if (reaction) {
             await reaction.users.remove(client.user.id);
-            console.log()
-
-            console.log(`Succses [${msg.author.displayName}]`);
+            console.log(`[${msg.author.displayName}-${msg.author.id}]`);
         } else {
             console.log("Reaction not found in cache.");
         }
