@@ -41,7 +41,6 @@ client.on('messageCreate', async msg => {
         (!check.user || (check.user && ids.user.includes(msg.author.id)))
     ){
         await addReaction(msg);
-
     }
 
 })
@@ -84,41 +83,16 @@ async function getInfo() {
         channel: [],
         user: []
     };
-
-    if (check.guild) {
-        for (const guildId of ids.guild) {
-            if (guildId) {
-                try {
-                    const guild = await client.guilds.fetch(guildId);
-                    result.guild.push(guild.name);
-                } catch (error) {
-                    console.error(`Не вдалося отримати сервер з ID ${guildId}:`, error);
-                }
-            }
-        }
-    }
-
-    if (check.channel) {
-        for (const channelId of ids.channel) {
-            if (channelId) {
-                try {
-                    const channel = await client.channels.fetch(channelId);
-                    result.channel.push(channel.name);
-                } catch (error) {
-                    console.error(`Не вдалося отримати канал з ID ${channelId}:`, error);
-                }
-            }
-        }
-    }
-
-    if (check.user) {
-        for (const userId of ids.user) {
-            if (userId) {
-                try {
-                    const user = await client.users.fetch(userId);
-                    result.user.push(user.username);
-                } catch (error) {
-                    console.error(`Не вдалося отримати користувача з ID ${userId}:`, error);
+    for(const key of Object.keys(check)){
+        if (check[key]) {
+            for (const keyId of ids[key]) {
+                if (keyId) {
+                    try {
+                        const data = await client[`${key}s`].fetch(keyId);
+                        result[key].push(data.name);
+                    } catch (error) {
+                        console.error(`Не вдалося отримати сервер з ID ${keyId}:`, error);
+                    }
                 }
             }
         }
