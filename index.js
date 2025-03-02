@@ -1,13 +1,13 @@
 const { Client } = require('discord.js-selfbot-v13');
-const {ids, check, emoji, delay} = require('./config.json')
 require('dotenv').config()
 const readline = require('readline');
 const { promisify } = require('util');
-const setTimeoutAsync = promisify(setTimeout);
+const {ids, check, emoji, delay} = require('./config.js')
 
+const setTimeoutAsync = promisify(setTimeout);
 const client = new Client();
 let reactionLock = false;
-let on_off = false;
+let on_off = true;
 
 const rl = readline.createInterface({
     input: process.stdin,
